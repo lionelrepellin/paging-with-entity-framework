@@ -8,7 +8,7 @@
 - [Bugs and feature](#bugs-and-feature)
 - [Documentation](#documentation)
 - [Files description](#files-description)
-- [Creator](#creators)
+- [Creator](#creator)
 - [Copyright and license](#copyright-and-license)
 
 
