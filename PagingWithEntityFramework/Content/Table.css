@@ -1,0 +1,21 @@
+﻿table tr td {
+    padding: 3px;
+}
+
+table {
+    border-top: 1px solid #dcdcdc;
+    border-left: 1px solid #dcdcdc;
+    border-bottom: 1px solid #dcdcdc;
+    border-spacing: 3px;
+    border-collapse: collapse;
+}
+
+td {
+    border-right: 1px solid #dcdcdc;
+}
+
+thead {
+    background-color: #1e90ff;
+    color: #ffffff;
+    font-weight: bold;
+} 
