@@ -2,21 +2,21 @@
 @using PagingWithEntityFramework.Helpers
 
 @{
-    ViewBag.Title = "Erreurs";
+    ViewBag.Title = "Errors list";
 }
 
 <p>
-    Page : @Model.CurrentPage / @Model.TotalPages
+    <!-- example: Current page : 1 / 21 -->
+    Current page : @Model.CurrentPage / @Model.TotalPages
 </p>
 
 <table>
     <thead>
         <tr>
-            <td width="100">Id</td>
-            <td width="100">Numéro</td>
-            <td width="100">Sévérité</td>
-            <td width="200">Procédure</td>
-            <td width="200">Message</td>
+            <td width="100">Id</td>            
+            <td width="200">Date</td>
+            <td width="150">Severity</td>            
+            <td width="500">Message</td>
         </tr>
     </thead>
     <tbody>
@@ -24,15 +24,15 @@
         {
             <tr>
                 <td>@error.Id</td>
-                <td>@error.ErrorNumber</td>
-                <td>@error.ErrorSeverity</td>
-                <td>@error.ErrorProcedure</td>
-                <td>@error.ErrorMessage</td>
+                <td>@error.CurrentDate</td>
+                <td>@error.Level</td>
+                <td>@error.Stacktrace</td>
             </tr>
         }
     </tbody>
 </table>
 
 <p>
+    <!-- display the navigation bar here -->
     @Html.DrawNavBar(Model.CurrentPage, Model.TotalPages)
 </p>

@@ -1,15 +1,20 @@
-﻿declare @i int 
-set @i = 0
+﻿declare @i int = 0
+declare @totalLines int = 500
+declare @date datetime = GETDATE();
+declare @minutes tinyint
+declare @level tinyint
 
-declare @errNum int
-set @errNum = 1000
-
-while @i < 1000
+while @i < @totalLines
 begin
-	set @errNum = @errNum + 1
+	
+	select @level = ROUND(((3) * RAND()), 0)
+	select @minutes = ROUND(((59 - 1) * RAND() + 1), 0)
+	set @date = DATEADD(n, @minutes, @date)
 
-	insert erreur(ErrorNumber, ErrorSeverity, ErrorState, ErrorProcedure, ErrorLine, ErrorMessage) 
-	values(@errNum, @errNum/2, @i, 'proc ' + cast(@i as varchar), @i * 2, 'error dsf fs f fsfsdf')
+	insert [log]([date], severity, [message]) 
+	values(@date, @level, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
 
 	set @i = @i + 1
 end
+
+select * from [log] 

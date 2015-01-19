@@ -7,24 +7,27 @@ using System.Web;
 
 namespace PagingWithEntityFramework.Domain
 {
-    [Table("erreur")]
+    [Table("log")]
     public class Error
     {
         [Key, Column("id")]
         public int Id { get; set; }
 
-        public int ErrorNumber { get; set; }
+        [Column("date")]
+        public DateTime CurrentDate { get; set; }
 
-        public int ErrorSeverity { get; set; }
+        [Column("severity")]
+        public Severity Level { get; set; }
 
-        public int ErrorState { get; set; }
-
-        [MaxLength(1000)]
-        public string ErrorProcedure { get; set; }
-
-        public int ErrorLine { get; set; }
-
-        [MaxLength(1000)]
-        public string ErrorMessage { get; set; }
+        [Column("message")]
+        public string Stacktrace { get; set; }
     }
+
+    public enum Severity
+    {
+        NotSoBad,
+        Warning,
+        Error,
+        Fatal
+    };
 }

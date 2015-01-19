@@ -24,7 +24,7 @@ namespace PagingWithEntityFramework.DAL
 
         public int GetTotalNumberOfErrors()
         {
-            return this.Database.SqlQuery<int>("SELECT COUNT(0) FROM erreur WITH(NOLOCK)").SingleOrDefault();
+            return this.Database.SqlQuery<int>("SELECT COUNT(0) FROM [log] WITH(NOLOCK)").SingleOrDefault();
         }
 
         public IEnumerable<Error> GetErrorsByPageIndex(int pageIndex, int linesPerPage)
