@@ -7,6 +7,7 @@
 - [Quick start](#quick-start)
 - [Bugs and feature](#bugs-and-feature)
 - [Documentation](#documentation)
+- [Glimpse](#glimpse)
 - [Files description](#files-description)
 - [Creator](#creator)
 - [Copyright and license](#copyright-and-license)
@@ -24,7 +25,7 @@
 - Put your database settings into Web.config
 - Create table with App_Data/CreateTable.sql
 - Insert a lot of data into the table with App_Data/Data.sql
-- Run the Web App with F5 !
+- Run the Web App from Visual Studio with F5 !
 
 ## Bugs and feature
 
@@ -62,6 +63,14 @@ I hope this navigation bar will be integrated in your projects !
 #### What this is not
 
 This code should be good but it is just a try. Use this code at your own risk !
+
+## Glimpse
+
+You can activate [Glimpse](http://getglimpse.com/) to view SQL queries like this :
+
+- Launch the App from Visual Studio (F5)
+- Go to url : http://localhost:[PORT]/Glimpse.axd
+- Click on : "Turn Glimpse On" button
 
 
 ## Files description
