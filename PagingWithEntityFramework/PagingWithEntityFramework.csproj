@@ -159,7 +159,6 @@
     <Compile Include="Helpers\NavBar.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\CreateTable.sql" />
