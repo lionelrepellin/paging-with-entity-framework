@@ -18,7 +18,7 @@
 
 This is the navigation bar (with Bootstrap theme). You can define the minimum number of page to be displayed. You can also activate Previous and Next buttons and / or First and Last buttons.
 
-![Navigation Bar](https://github.com/lionelrepellin/paging-with-entity-framework/navbar.png "Navigation Bar")
+![Navigation Bar](https://github.com/lionelrepellin/paging-with-entity-framework/blob/master/navbar.png "Navigation Bar")
 
 
 ## Requirements
