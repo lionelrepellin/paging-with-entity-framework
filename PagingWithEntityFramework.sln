@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagingWithEntityFramework",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ACB41BA8-7EC8-4AD3-ACCE-F91BC822D83D}"
 	ProjectSection(SolutionItems) = preProject
+		navbar.png = navbar.png
 		README.md = README.md
 	EndProjectSection
 EndProject

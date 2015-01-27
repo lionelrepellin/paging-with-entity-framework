@@ -3,6 +3,7 @@
 
 ## Table of contents
 
+- [What it looks like?](#what-it-looks-like?)
 - [Requirements](#requirements)
 - [Quick start](#quick-start)
 - [Bugs and feature](#bugs-and-feature)
@@ -11,6 +12,13 @@
 - [Files description](#files-description)
 - [Creator](#creator)
 - [Copyright and license](#copyright-and-license)
+
+
+## What it looks like?
+
+This is the navigation bar (with Bootstrap theme). You can define the minimum number of page to be displayed. You can also activate Previous and Next buttons and / or First and Last buttons.
+
+![Navigation Bar](https://github.com/lionelrepellin/paging-with-entity-framework/navbar.png "Navigation Bar")
 
 
 ## Requirements
@@ -26,6 +34,8 @@
 - Create table with App_Data/CreateTable.sql
 - Insert a lot of data into the table with App_Data/Data.sql
 - Run the Web App from Visual Studio with F5 !
+
+
 
 ## Bugs and feature
 

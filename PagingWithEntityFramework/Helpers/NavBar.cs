@@ -5,6 +5,41 @@ using System.Web;
 
 namespace PagingWithEntityFramework.Helpers
 {
+    //public abstract class Button
+    //{
+    //    protected bool IsCurrentPage { get; set; }
+    //    public abstract void Display();
+    //}
+
+    //public class PageButton : Button
+    //{
+        
+
+    //    public override void Display()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+
+    //public class PrevNextButton : Button
+    //{
+
+    //    public override void Display()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+
+    //public class FirstLastButton : Button
+    //{
+
+    //    public override void Display()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+
+
     public abstract class AbstractNavBar
     {
         protected int CurrentPage;
