@@ -149,14 +149,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="DAL\Context.cs" />
-    <Compile Include="Domain\Error.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\CustomerHelpers.cs" />
-    <Compile Include="Helpers\NavBar.cs" />
+    <Compile Include="Helpers\CustomHelpers.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -249,10 +246,24 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PagingWithEntityFramework.Business\PagingWithEntityFramework.Business.csproj">
+      <Project>{a5da5678-1724-4597-bda1-dfdc505d9964}</Project>
+      <Name>PagingWithEntityFramework.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PagingWithEntityFramework.Domain\PagingWithEntityFramework.Domain.csproj">
+      <Project>{d73b34f2-be5c-4182-bc39-93c11f33c4dd}</Project>
+      <Name>PagingWithEntityFramework.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Paging\Paging.csproj">
+      <Project>{9b96fbab-0c6f-491a-9243-607debbc2437}</Project>
+      <Name>Paging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

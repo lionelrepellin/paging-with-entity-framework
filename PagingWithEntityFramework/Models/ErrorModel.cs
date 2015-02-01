@@ -1,6 +1,7 @@
-﻿using PagingWithEntityFramework.Domain;
+﻿using PagingWithEntityFramework.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,28 +9,44 @@ namespace PagingWithEntityFramework.Models
 {
     public class ErrorModel
     {
-        private readonly int linesPerPage;
+        #region Data bound to the form
 
-        public IEnumerable<Error> Errors { get; private set; }
+        [Display(Name = "Server name")]
+        public string Name { get; set; }
 
-        public int CurrentPage { get; private set; }
+        [Display(Name = "Severity")]
+        public string ErrorLevel { get; set; }
 
-        public int TotalLines { get; private set; }
+        [Display(Name = "Message")]
+        public string StackTrace { get; set; }
+
+        // hidden field in the view
+        public int CurrentPage { get; set; }
+
+        #endregion
+
+        public int LinesPerPage { get; set; }
+        public IEnumerable<Error> Errors { get; set; }
+        public int TotalLines { get; set; }
 
         public int TotalPages
         {
             get
             {
-                return (int)Math.Ceiling(TotalLines * 1.0 / linesPerPage);    
+                return (int)Math.Ceiling(TotalLines * 1.0 / LinesPerPage);
             }
         }
 
-        public ErrorModel(IEnumerable<Error> errors, int linesPerPage, int currentPage, int totalLines)
+        public ErrorModel()
         {
-            this.Errors = errors;
-            this.linesPerPage = linesPerPage;
-            this.CurrentPage = currentPage;
-            this.TotalLines = totalLines;
+        }
+
+        public string GetQueryParameters()
+        {
+            if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(StackTrace))
+                return string.Empty;
+            else
+                return string.Format("Name={0}&ErrorLevel={1}&StackTrace={2}", Name, ErrorLevel, StackTrace);
         }
     }
 }

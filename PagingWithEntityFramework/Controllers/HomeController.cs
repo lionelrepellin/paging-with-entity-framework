@@ -1,8 +1,8 @@
-﻿using PagingWithEntityFramework.DAL;
+﻿using PagingWithEntityFramework.Business;
+using PagingWithEntityFramework.Domain;
 using PagingWithEntityFramework.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,42 +11,79 @@ namespace PagingWithEntityFramework.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly int linesPerPage = 30;
+        private const int LINES_PER_PAGE = 20;
 
-        public HomeController()
-        {
-        }
 
-        // GET: /Home/
+        /// <summary>
+        /// Used to display the first page without search criteria
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
-            using (var ctx = new Context())
-            {
-                var model = CreateErrorModel(0, ctx);
-                return View(model);
-            }
+            var model = CreateModel(1);
+            return View("Index", model);
         }
 
-        // GET: /Home/Get?page=2
-        public ActionResult Get(int page)
+
+        /// <summary>
+        /// Used to navigate from page to page (with or without search criteria)
+        /// </summary>
+        /// <param name="errorModel"></param>
+        /// <returns></returns>
+        public ActionResult Get(ErrorModel errorModel)
         {
-            using (var ctx = new Context())
-            {
-                var model = CreateErrorModel(page - 1, ctx);
-                return View("Index", model);
-            }
+            var model = CreateModel(errorModel.CurrentPage, errorModel.Name, errorModel.ErrorLevel, errorModel.StackTrace);
+            return View("Index", model);
         }
 
-        private ErrorModel CreateErrorModel(int pageIndex, Context ctx)
+
+        /// <summary>
+        /// Used to retrieve errors with search criteria
+        /// </summary>
+        /// <param name="errorModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Search(ErrorModel errorModel)
         {
-            var model = new ErrorModel
-            (
-                errors: ctx.GetErrorsByPageIndex(pageIndex, linesPerPage),
-                linesPerPage: linesPerPage,
-                currentPage: pageIndex + 1,
-                totalLines: ctx.GetTotalNumberOfErrors()
-            );
-            return model;
+            // always set the page to 1 to display the result
+            var model = CreateModel(1, errorModel.Name, errorModel.ErrorLevel, errorModel.StackTrace);
+            return View("Index", model);
+        }
+
+
+        private ErrorModel CreateModel(int currentPage, string name = "", string errorLevel = "", string stackTrace = "")
+        {
+            SearchCriteria searchCriteria = null;
+
+            if (!string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(errorLevel) || !string.IsNullOrEmpty(stackTrace))
+            {
+                // fill the search criteria object
+                searchCriteria = new SearchCriteria
+                {
+                    StackTrace = stackTrace,
+                    ServerName = name,
+                    Severity = errorLevel
+                };
+            }
+
+            // retrieve errors from database
+            var result = ErrorService.RetrieveErrors(currentPage, LINES_PER_PAGE, searchCriteria);
+
+            // create model
+            var errorModel = new ErrorModel
+            {
+                Errors = result.Errors,
+                LinesPerPage = LINES_PER_PAGE,
+                CurrentPage = currentPage,
+                TotalLines = result.TotalLines,
+
+                // attaches to the model the data we are looking for
+                Name = name,
+                StackTrace = stackTrace,
+                ErrorLevel = errorLevel
+            };
+
+            return errorModel;
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿USE [DATABASE NAME]
-GO
-
-SET ANSI_NULLS ON
+﻿SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
@@ -12,8 +9,9 @@ GO
 
 CREATE TABLE [dbo].[log](
 	[id] [int] IDENTITY(1,1) NOT NULL,
-	[date] [date] NULL,
-	[severity] [int] NULL,
+	[date] [datetime] NULL,
+	[server] [varchar](50) NULL,
+	[severity] [varchar](50) NULL,
 	[message] [varchar](500) NULL,
  CONSTRAINT [PK_log] PRIMARY KEY CLUSTERED 
 (
