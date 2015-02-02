@@ -12,6 +12,19 @@ namespace PagingWithEntityFramework.Controllers
     public class HomeController : Controller
     {
         private const int LINES_PER_PAGE = 20;
+        private ErrorService _errorService;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="errorService">ErrorService injected by Unity</param>
+        public HomeController(ErrorService errorService)
+        {
+            if (errorService == null)
+                throw new ArgumentNullException("errorService");
+            
+            _errorService = errorService;
+        }
 
 
         /// <summary>
@@ -67,7 +80,7 @@ namespace PagingWithEntityFramework.Controllers
             }
 
             // retrieve errors from database
-            var result = ErrorService.RetrieveErrors(currentPage, LINES_PER_PAGE, searchCriteria);
+            var result = _errorService.RetrieveErrors(currentPage, LINES_PER_PAGE, searchCriteria);
 
             // create model
             var errorModel = new ErrorModel

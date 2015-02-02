@@ -11,33 +11,43 @@ namespace PagingWithEntityFramework.Business
 {
     public class ErrorService
     {
-        public static ErrorResult RetrieveErrors(int page, int linesPerPage, SearchCriteria criteria)
+        private ErrorContext _errorContext;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="errorContext">ErrorContext injected by Unity</param>
+        public ErrorService(ErrorContext errorContext)
         {
-            using (var ctx = new Context())
-            {
-                var pageIndex = page - 1;
+            if (errorContext == null)
+                throw new ArgumentNullException("errorContext");
 
-                // prevent index out of bounds exception
-                if (pageIndex < 0) pageIndex = 0;
-
-                if (criteria == null)
-                {
-                    return new ErrorResult
-                    {
-                        TotalLines = ctx.FindTotalNumberOfErrors(),
-                        Errors = ctx.FindErrorsByPageIndex(pageIndex, linesPerPage)
-                    };
-                }
-                else
-                {
-                    return new ErrorResult
-                    {
-                        TotalLines = ctx.FindTotalNumberOfErrorsWithCriteria(criteria),
-                        Errors = ctx.FindErrorsByPageIndexAndCriteria(pageIndex, linesPerPage, criteria)
-                    };
-                }
-            }
+            _errorContext = errorContext;
         }
 
+        public ErrorResult RetrieveErrors(int page, int linesPerPage, SearchCriteria criteria)
+        {
+            var pageIndex = page - 1;
+
+            // prevent index out of bounds exception
+            if (pageIndex < 0) pageIndex = 0;
+
+            if (criteria == null)
+            {
+                return new ErrorResult
+                {
+                    TotalLines = _errorContext.FindTotalNumberOfErrors(),
+                    Errors = _errorContext.FindErrorsByPageIndex(pageIndex, linesPerPage)
+                };
+            }
+            else
+            {
+                return new ErrorResult
+                {
+                    TotalLines = _errorContext.FindTotalNumberOfErrorsWithCriteria(criteria),
+                    Errors = _errorContext.FindErrorsByPageIndexAndCriteria(pageIndex, linesPerPage, criteria)
+                };
+            }
+        }
     }
 }

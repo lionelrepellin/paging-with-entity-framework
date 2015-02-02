@@ -22,6 +22,9 @@ namespace PagingWithEntityFramework
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // basic bootstrapper for dependency injection
+            Bootstrapper.Initialise();
         }
     }
 }
