@@ -41,11 +41,13 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -60,7 +62,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BaseTest.cs" />
     <Compile Include="ErrorServiceTest.cs" />
+    <Compile Include="HomeControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +79,10 @@
     <ProjectReference Include="..\PagingWithEntityFramework.Domain\PagingWithEntityFramework.Domain.csproj">
       <Project>{d73b34f2-be5c-4182-bc39-93c11f33c4dd}</Project>
       <Name>PagingWithEntityFramework.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PagingWithEntityFramework\PagingWithEntityFramework.csproj">
+      <Project>{f9960d0b-0e46-49b8-901d-0b5a339fce62}</Project>
+      <Name>PagingWithEntityFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

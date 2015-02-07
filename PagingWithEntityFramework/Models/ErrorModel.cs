@@ -1,4 +1,5 @@
-﻿using PagingWithEntityFramework.Domain.Entities;
+﻿using PagingWithEntityFramework.Domain;
+using PagingWithEntityFramework.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,8 +18,8 @@ namespace PagingWithEntityFramework.Models
         [Display(Name = "Severity")]
         public string ErrorLevel { get; set; }
 
-        [Display(Name = "Message")]
-        public string StackTrace { get; set; }
+        [Display(Name = "Error Message")]
+        public string ErrorMessage { get; set; }
 
         // hidden field in the view
         public int CurrentPage { get; set; }
@@ -41,12 +42,32 @@ namespace PagingWithEntityFramework.Models
         {
         }
 
+        private bool IsSearchCriteriaEmpty()
+        {
+            return (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(ErrorLevel) && string.IsNullOrEmpty(ErrorMessage));
+        }
+
         public string GetQueryParameters()
         {
-            if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(StackTrace))
+            if (IsSearchCriteriaEmpty())
                 return string.Empty;
             else
-                return string.Format("Name={0}&ErrorLevel={1}&StackTrace={2}", Name, ErrorLevel, StackTrace);
+                return string.Format("Name={0}&ErrorLevel={1}&ErrorMessage={2}", Name, ErrorLevel, ErrorMessage);
+        }
+
+        public SearchCriteria GetDefinedSearchCriteria()
+        {
+            if (IsSearchCriteriaEmpty())
+                return null;
+            else
+            {
+                return new SearchCriteria
+                {
+                    ServerName = Name,
+                    Severity = ErrorLevel,
+                    StackTrace = ErrorMessage
+                };
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace PagingWithEntityFramework.DAL
 
         #region Queries without search criteria
 
-        // the 'virtual' key word is used to be mocked
+        // the 'virtual' keyword is used to mock the method
         public virtual int FindTotalNumberOfErrors()
         {
             // inline query

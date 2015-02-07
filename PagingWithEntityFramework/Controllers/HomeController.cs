@@ -33,7 +33,7 @@ namespace PagingWithEntityFramework.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            var model = CreateModel(1);
+            var model = CreateModel(new ErrorModel { CurrentPage = 1 });
             return View("Index", model);
         }
 
@@ -45,7 +45,7 @@ namespace PagingWithEntityFramework.Controllers
         /// <returns></returns>
         public ActionResult Get(ErrorModel errorModel)
         {
-            var model = CreateModel(errorModel.CurrentPage, errorModel.Name, errorModel.ErrorLevel, errorModel.StackTrace);
+            var model = CreateModel(errorModel);
             return View("Index", model);
         }
 
@@ -59,42 +59,26 @@ namespace PagingWithEntityFramework.Controllers
         public ActionResult Search(ErrorModel errorModel)
         {
             // always set the page to 1 to display the result
-            var model = CreateModel(1, errorModel.Name, errorModel.ErrorLevel, errorModel.StackTrace);
+            errorModel.CurrentPage = 1;
+
+            var model = CreateModel(errorModel);
             return View("Index", model);
         }
 
 
-        private ErrorModel CreateModel(int currentPage, string name = "", string errorLevel = "", string stackTrace = "")
+        // the 'virtual' keyword is used to mock the method
+        public virtual ErrorModel CreateModel(ErrorModel errorModel)
         {
-            SearchCriteria searchCriteria = null;
-
-            if (!string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(errorLevel) || !string.IsNullOrEmpty(stackTrace))
-            {
-                // fill the search criteria object
-                searchCriteria = new SearchCriteria
-                {
-                    StackTrace = stackTrace,
-                    ServerName = name,
-                    Severity = errorLevel
-                };
-            }
+            // get an object if search criteria have been defined
+            var searchCriteria = errorModel.GetDefinedSearchCriteria();
 
             // retrieve errors from database
-            var result = _errorService.RetrieveErrors(currentPage, LINES_PER_PAGE, searchCriteria);
+            var result = _errorService.RetrieveErrors(errorModel.CurrentPage, LINES_PER_PAGE, searchCriteria);
 
-            // create model
-            var errorModel = new ErrorModel
-            {
-                Errors = result.Errors,
-                LinesPerPage = LINES_PER_PAGE,
-                CurrentPage = currentPage,
-                TotalLines = result.TotalLines,
-
-                // attaches to the model the data we are looking for
-                Name = name,
-                StackTrace = stackTrace,
-                ErrorLevel = errorLevel
-            };
+            // set properties to the model
+            errorModel.Errors = result.Errors;
+            errorModel.LinesPerPage = LINES_PER_PAGE;
+            errorModel.TotalLines = result.TotalLines;
 
             return errorModel;
         }

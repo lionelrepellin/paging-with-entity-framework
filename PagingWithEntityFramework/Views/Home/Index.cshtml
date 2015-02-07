@@ -26,7 +26,7 @@
 
         <div class="col-md-4">
             <div class="form-group">
-                @Html.LabelFor(m => m.StackTrace) : @Html.TextBoxFor(m => m.StackTrace, new { @class = "form-control input-sm" })
+                @Html.LabelFor(m => m.ErrorMessage) : @Html.TextBoxFor(m => m.ErrorMessage, new { @class = "form-control input-sm" })
             </div>
 
             <div class="form-group pull-right">
@@ -43,14 +43,14 @@
 
 @if (Model.Errors.Any())
 {
-    <table>
+    <table style="margin:auto;width:90%;" class="table table-striped table-condensed">
         <thead>
             <tr>
                 <td width="100">Id</td>
                 <td width="200">Date</td>
                 <td width="200">Server name</td>
                 <td width="150">Severity</td>
-                <td width="500">Message</td>
+                <td width="500">Error Message</td>
             </tr>
         </thead>
         <tbody>
@@ -69,11 +69,15 @@
 }
 else
 {
-    <p>Sorry ! No content available for the request.</p>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="alert alert-warning" style="text-align:center;" role="alert">Sorry ! No content available for the request.</div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
 }
 
-<p>
-    <!-- display the navigation bar here -->
-    <!-- you can safely put this here even if you have no result to display the navbar will display nothing -->
-    @Html.DrawNavBar(Model.CurrentPage, Model.TotalPages, Model.GetQueryParameters())
-</p>
+<!-- display the navigation bar here -->
+<!-- you can safely put this here even if you have no result to display the navbar will display nothing -->
+@Html.DrawNavBar(Model.CurrentPage, Model.TotalPages, Model.GetQueryParameters())
