@@ -17,7 +17,7 @@ namespace PagingWithEntityFramework.Tests
 {
     [TestClass]
     public class HomeControllerTest : BaseTest
-    {        
+    {
         private int _pageIndex;
         private int _currentPage;
         private int _linesPerPage;
@@ -44,21 +44,61 @@ namespace PagingWithEntityFramework.Tests
             errorContextMock.Setup(c => c.FindTotalNumberOfErrors()).Returns(numberOfErrors);
             errorContextMock.Setup(c => c.FindErrorsByPageIndex(_pageIndex, _linesPerPage)).Returns(_errors);
 
-            // instanciate ErrorService with mock
+            // instantiate ErrorService with mock
             var errorService = new ErrorService(errorContextMock.Object);
 
             // Act
             var controller = new HomeController(errorService);
-            var errorModel = controller.CreateModel(new Models.ErrorModel { CurrentPage = _currentPage });
+            var errorModel = controller.CreateModel(new Models.ErrorModel { CurrentPage = _currentPage }, null);
 
             // Assert
             Assert.AreEqual(_currentPage, errorModel.CurrentPage);
             Assert.AreEqual(numberOfErrors, errorModel.Errors.Count());
             Assert.AreEqual(_linesPerPage, errorModel.LinesPerPage);
             Assert.AreEqual(numberOfErrors, errorModel.TotalLines);
-            
+
             errorContextMock.Verify(c => c.FindTotalNumberOfErrors(), Times.Once());
             errorContextMock.Verify(c => c.FindErrorsByPageIndex(_pageIndex, _linesPerPage), Times.Once());
+        }
+
+        [TestMethod]
+        public void CreateModelTestWithCriteria_Ok()
+        {
+            // Arrange
+            var searchCriteria = new SearchCriteria
+            {
+                Severity = "Warning"                
+            };
+
+            var filteredErrors = _errors.Where(e => e.ErrorLevel.Contains(searchCriteria.Severity)).ToList();
+            var numberOfErrors = filteredErrors.Count;
+                        
+            // Create a mock for ErrorContext
+            var errorContextMock = new Mock<ErrorContext>();
+            errorContextMock.Setup(c => c.FindTotalNumberOfErrorsWithCriteria(searchCriteria)).Returns(numberOfErrors);
+            errorContextMock.Setup(c => c.FindErrorsByPageIndexAndCriteria(_pageIndex, _linesPerPage, searchCriteria)).Returns(filteredErrors);
+
+            // instantiate ErrorService with mock
+            var errorService = new ErrorService(errorContextMock.Object);
+
+            var homeController = new HomeController(errorService);
+            var errorModel = new ErrorModel
+            {
+                CurrentPage = _currentPage,
+                ErrorLevel = "Warning"
+            };
+
+            // Act
+            var model = homeController.CreateModel(errorModel, searchCriteria);
+
+            // Assert
+            Assert.AreEqual(_currentPage, errorModel.CurrentPage);
+            Assert.AreEqual(numberOfErrors, errorModel.Errors.Count());
+            Assert.AreEqual(_linesPerPage, errorModel.LinesPerPage);
+            Assert.AreEqual(numberOfErrors, errorModel.TotalLines);
+
+            errorContextMock.Verify(c => c.FindTotalNumberOfErrorsWithCriteria(searchCriteria), Times.Once());
+            errorContextMock.Verify(c => c.FindErrorsByPageIndexAndCriteria(_pageIndex, _linesPerPage, searchCriteria), Times.Once());
         }
     }
 }

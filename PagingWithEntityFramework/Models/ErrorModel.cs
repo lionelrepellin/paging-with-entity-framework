@@ -55,6 +55,10 @@ namespace PagingWithEntityFramework.Models
                 return string.Format("Name={0}&ErrorLevel={1}&ErrorMessage={2}", Name, ErrorLevel, ErrorMessage);
         }
 
+        /// <summary>
+        /// Return a SearchCriteria object if search criteria have been defined
+        /// </summary>
+        /// <returns></returns>
         public SearchCriteria GetDefinedSearchCriteria()
         {
             if (IsSearchCriteriaEmpty())

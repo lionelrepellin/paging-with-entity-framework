@@ -33,7 +33,7 @@ namespace PagingWithEntityFramework.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            var model = CreateModel(new ErrorModel { CurrentPage = 1 });
+            var model = CreateModel(new ErrorModel { CurrentPage = 1 }, null);
             return View("Index", model);
         }
 
@@ -45,7 +45,7 @@ namespace PagingWithEntityFramework.Controllers
         /// <returns></returns>
         public ActionResult Get(ErrorModel errorModel)
         {
-            var model = CreateModel(errorModel);
+            var model = CreateModel(errorModel, errorModel.GetDefinedSearchCriteria());
             return View("Index", model);
         }
 
@@ -61,17 +61,14 @@ namespace PagingWithEntityFramework.Controllers
             // always set the page to 1 to display the result
             errorModel.CurrentPage = 1;
 
-            var model = CreateModel(errorModel);
+            var model = CreateModel(errorModel, errorModel.GetDefinedSearchCriteria());
             return View("Index", model);
         }
 
 
         // the 'virtual' keyword is used to mock the method
-        public virtual ErrorModel CreateModel(ErrorModel errorModel)
+        public virtual ErrorModel CreateModel(ErrorModel errorModel, SearchCriteria searchCriteria)
         {
-            // get an object if search criteria have been defined
-            var searchCriteria = errorModel.GetDefinedSearchCriteria();
-
             // retrieve errors from database
             var result = _errorService.RetrieveErrors(errorModel.CurrentPage, LINES_PER_PAGE, searchCriteria);
 
