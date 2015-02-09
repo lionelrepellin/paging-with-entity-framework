@@ -42,36 +42,12 @@ namespace PagingWithEntityFramework.Models
         {
         }
 
-        private bool IsSearchCriteriaEmpty()
-        {
-            return (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(ErrorLevel) && string.IsNullOrEmpty(ErrorMessage));
-        }
-
         public string GetQueryParameters()
         {
-            if (IsSearchCriteriaEmpty())
+            if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(ErrorLevel) && string.IsNullOrEmpty(ErrorMessage))
                 return string.Empty;
             else
                 return string.Format("Name={0}&ErrorLevel={1}&ErrorMessage={2}", Name, ErrorLevel, ErrorMessage);
-        }
-
-        /// <summary>
-        /// Return a SearchCriteria object if search criteria have been defined
-        /// </summary>
-        /// <returns></returns>
-        public SearchCriteria GetDefinedSearchCriteria()
-        {
-            if (IsSearchCriteriaEmpty())
-                return null;
-            else
-            {
-                return new SearchCriteria
-                {
-                    ServerName = Name,
-                    Severity = ErrorLevel,
-                    StackTrace = ErrorMessage
-                };
-            }
         }
     }
 }

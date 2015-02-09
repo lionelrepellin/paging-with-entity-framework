@@ -45,7 +45,9 @@ namespace PagingWithEntityFramework.Controllers
         /// <returns></returns>
         public ActionResult Get(ErrorModel errorModel)
         {
-            var model = CreateModel(errorModel, errorModel.GetDefinedSearchCriteria());
+            var searchCriteria = _errorService.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
+            var model = CreateModel(errorModel, searchCriteria); 
+
             return View("Index", model);
         }
 
@@ -61,7 +63,9 @@ namespace PagingWithEntityFramework.Controllers
             // always set the page to 1 to display the result
             errorModel.CurrentPage = 1;
 
-            var model = CreateModel(errorModel, errorModel.GetDefinedSearchCriteria());
+            var searchCriteria = _errorService.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
+            var model = CreateModel(errorModel, searchCriteria);
+
             return View("Index", model);
         }
 

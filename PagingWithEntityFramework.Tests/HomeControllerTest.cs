@@ -67,12 +67,12 @@ namespace PagingWithEntityFramework.Tests
             // Arrange
             var searchCriteria = new SearchCriteria
             {
-                Severity = "Warning"                
+                Severity = "Warning"
             };
 
             var filteredErrors = _errors.Where(e => e.ErrorLevel.Contains(searchCriteria.Severity)).ToList();
             var numberOfErrors = filteredErrors.Count;
-                        
+
             // Create a mock for ErrorContext
             var errorContextMock = new Mock<ErrorContext>();
             errorContextMock.Setup(c => c.FindTotalNumberOfErrorsWithCriteria(searchCriteria)).Returns(numberOfErrors);
