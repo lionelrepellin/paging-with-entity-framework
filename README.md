@@ -10,6 +10,7 @@
 - [Projects description](#projects-description)
 - [Contoso University project](#contoso-university-project)
 - [Creator](#creator)
+- [Quote](#quote)
 - [Copyright and license](#copyright-and-license)
 
 ## What is it?
@@ -137,6 +138,10 @@ The original [Contoso University](http://www.asp.net/mvc/overview/getting-starte
 ## Creator
 
 Lionel Repellin inspired by himself.
+
+## Quote
+
+One of my favorite quotes : *Live as if you were to die tomorrow. Learn as if you were to live forever.* - Mahatma Gandhi
 
 ## Copyright and license
 
