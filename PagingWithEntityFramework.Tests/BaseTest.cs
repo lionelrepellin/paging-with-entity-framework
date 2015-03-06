@@ -1,4 +1,6 @@
-﻿using PagingWithEntityFramework.Domain.Entities;
+﻿using Moq;
+using PagingWithEntityFramework.DAL;
+using PagingWithEntityFramework.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,11 @@ namespace PagingWithEntityFramework.Tests
 {
     public abstract class BaseTest
     {
-        protected IEnumerable<Error> GetErrors()
-        {
-            return new List<Error>
+        protected int pageIndex;
+        protected int currentPage;
+        protected int linesPerPage;
+
+        protected IEnumerable<Error> errors = new List<Error>
             {
                 new Error { Id = 1, CurrentDate = DateTime.Now.AddMinutes(1), ServerName = "Server_1", ErrorLevel = "Warning", Stacktrace = "" },
                 new Error { Id = 2, CurrentDate = DateTime.Now.AddMinutes(2), ServerName = "Server_1", ErrorLevel = "Error", Stacktrace = "" },
@@ -24,6 +28,17 @@ namespace PagingWithEntityFramework.Tests
                 new Error { Id = 9, CurrentDate = DateTime.Now.AddMinutes(9), ServerName = "Server_1", ErrorLevel = "Fatal", Stacktrace = "" },
                 new Error { Id = 10, CurrentDate = DateTime.Now.AddMinutes(10), ServerName = "Server_3", ErrorLevel = "Warning", Stacktrace = "" }
             };
+
+        /// <summary>
+        /// Create a mock for ErrorContext
+        /// </summary>
+        /// <returns></returns>
+        protected Mock<ErrorContext> CreateMockContext()
+        {
+            var errorContextMock = new Mock<ErrorContext>();
+            var queryableErrors = errors.Select(e => e).AsQueryable<Error>();
+            errorContextMock.Setup(c => c.FindAllErrors()).Returns(queryableErrors);
+            return errorContextMock;
         }
     }
 }

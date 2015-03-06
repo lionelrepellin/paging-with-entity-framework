@@ -18,47 +18,36 @@ namespace PagingWithEntityFramework.Tests
     [TestClass]
     public class HomeControllerTest : BaseTest
     {
-        private int _pageIndex;
-        private int _currentPage;
-        private int _linesPerPage;
-        private IEnumerable<Error> _errors;
-
         [TestInitialize]
         public void Initialize()
         {
             // initialize common data
-            _pageIndex = 0;
-            _currentPage = 1;
-            _linesPerPage = 20;
-            _errors = GetErrors();
+            pageIndex = 0;
+            currentPage = 1;
+            linesPerPage = 20;
         }
 
         [TestMethod]
         public void CreateModelTestWithoutCriteria_Ok()
         {
             // Arrange
-            var numberOfErrors = _errors.Count();
-
-            // Create a mock for ErrorContext
-            var errorContextMock = new Mock<ErrorContext>();
-            errorContextMock.Setup(c => c.FindTotalNumberOfErrors()).Returns(numberOfErrors);
-            errorContextMock.Setup(c => c.FindErrorsByPageIndex(_pageIndex, _linesPerPage)).Returns(_errors);
+            var numberOfErrors = errors.Count();
+            var errorContextMock = CreateMockContext();
 
             // instantiate ErrorService with mock
             var errorService = new ErrorService(errorContextMock.Object);
 
             // Act
             var controller = new HomeController(errorService);
-            var errorModel = controller.CreateModel(new Models.ErrorModel { CurrentPage = _currentPage }, null);
+            var errorModel = controller.CreateModel(new Models.ErrorModel { CurrentPage = currentPage }, null);
 
             // Assert
-            Assert.AreEqual(_currentPage, errorModel.CurrentPage);
+            Assert.AreEqual(currentPage, errorModel.CurrentPage);
             Assert.AreEqual(numberOfErrors, errorModel.Errors.Count());
-            Assert.AreEqual(_linesPerPage, errorModel.LinesPerPage);
+            Assert.AreEqual(linesPerPage, errorModel.LinesPerPage);
             Assert.AreEqual(numberOfErrors, errorModel.TotalLines);
 
-            errorContextMock.Verify(c => c.FindTotalNumberOfErrors(), Times.Once());
-            errorContextMock.Verify(c => c.FindErrorsByPageIndex(_pageIndex, _linesPerPage), Times.Once());
+            errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
         }
 
         [TestMethod]
@@ -70,13 +59,11 @@ namespace PagingWithEntityFramework.Tests
                 Severity = "Warning"
             };
 
-            var filteredErrors = _errors.Where(e => e.ErrorLevel.Contains(searchCriteria.Severity)).ToList();
+            var filteredErrors = errors.Where(e => e.ErrorLevel.Contains(searchCriteria.Severity)).ToList();
             var numberOfErrors = filteredErrors.Count;
 
             // Create a mock for ErrorContext
-            var errorContextMock = new Mock<ErrorContext>();
-            errorContextMock.Setup(c => c.FindTotalNumberOfErrorsWithCriteria(searchCriteria)).Returns(numberOfErrors);
-            errorContextMock.Setup(c => c.FindErrorsByPageIndexAndCriteria(_pageIndex, _linesPerPage, searchCriteria)).Returns(filteredErrors);
+            var errorContextMock = CreateMockContext();            
 
             // instantiate ErrorService with mock
             var errorService = new ErrorService(errorContextMock.Object);
@@ -84,7 +71,7 @@ namespace PagingWithEntityFramework.Tests
             var homeController = new HomeController(errorService);
             var errorModel = new ErrorModel
             {
-                CurrentPage = _currentPage,
+                CurrentPage = currentPage,
                 ErrorLevel = "Warning"
             };
 
@@ -92,13 +79,12 @@ namespace PagingWithEntityFramework.Tests
             var model = homeController.CreateModel(errorModel, searchCriteria);
 
             // Assert
-            Assert.AreEqual(_currentPage, errorModel.CurrentPage);
+            Assert.AreEqual(currentPage, errorModel.CurrentPage);
             Assert.AreEqual(numberOfErrors, errorModel.Errors.Count());
-            Assert.AreEqual(_linesPerPage, errorModel.LinesPerPage);
+            Assert.AreEqual(linesPerPage, errorModel.LinesPerPage);
             Assert.AreEqual(numberOfErrors, errorModel.TotalLines);
 
-            errorContextMock.Verify(c => c.FindTotalNumberOfErrorsWithCriteria(searchCriteria), Times.Once());
-            errorContextMock.Verify(c => c.FindErrorsByPageIndexAndCriteria(_pageIndex, _linesPerPage, searchCriteria), Times.Once());
+            errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());            
         }
     }
 }

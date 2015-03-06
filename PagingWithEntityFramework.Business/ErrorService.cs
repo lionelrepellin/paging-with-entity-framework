@@ -25,29 +25,41 @@ namespace PagingWithEntityFramework.Business
             _errorContext = errorContext;
         }
 
-        public ErrorResult RetrieveErrors(int page, int linesPerPage, SearchCriteria criteria)
+        /// <summary>
+        /// Retrieve data from database and filter them with search criteria
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="linesPerPage"></param>
+        /// <param name="searchCriteria"></param>
+        /// <returns></returns>
+        public ErrorResult RetrieveErrors(int page, int linesPerPage, SearchCriteria searchCriteria = null)
         {
             var pageIndex = page - 1;
 
             // prevent index out of bounds exception
             if (pageIndex < 0) pageIndex = 0;
 
-            if (criteria == null)
+            var query = _errorContext.FindAllErrors();
+
+            if (searchCriteria != null)
             {
-                return new ErrorResult
-                {
-                    TotalLines = _errorContext.FindTotalNumberOfErrors(),
-                    Errors = _errorContext.FindErrorsByPageIndex(pageIndex, linesPerPage)
-                };
+                if (!string.IsNullOrEmpty(searchCriteria.StackTrace))
+                    query = query.Where(e => e.Stacktrace.Contains(searchCriteria.StackTrace));
+
+                if (!string.IsNullOrEmpty(searchCriteria.ServerName))
+                    query = query.Where(e => e.ServerName.Contains(searchCriteria.ServerName));
+
+                if (!string.IsNullOrEmpty(searchCriteria.Severity))
+                    query = query.Where(e => e.ErrorLevel.Contains(searchCriteria.Severity));
             }
-            else
+
+            query = query.OrderByDescending(e => e.Id);
+
+            return new ErrorResult
             {
-                return new ErrorResult
-                {
-                    TotalLines = _errorContext.FindTotalNumberOfErrorsWithCriteria(criteria),
-                    Errors = _errorContext.FindErrorsByPageIndexAndCriteria(pageIndex, linesPerPage, criteria)
-                };
-            }
+                Errors = query.Skip(pageIndex * linesPerPage).Take(linesPerPage).ToList(),
+                TotalLines = query.Count()
+            };
         }
 
         /// <summary>

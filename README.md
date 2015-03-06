@@ -8,7 +8,6 @@
 - [Requirements](#requirements)
 - [Quick start](#quick-start)
 - [Projects description](#projects-description)
-- [Contoso University project](#contoso-university-project)
 - [Creator](#creator)
 - [Quote](#quote)
 - [Copyright and license](#copyright-and-license)
@@ -36,6 +35,8 @@ This is a simple navigation bar (with Bootstrap theme). You can define the minim
 - Unit testing with [Visual Studio Unit Testing Framework](http://en.wikipedia.org/wiki/Visual_Studio_Unit_Testing_Framework) (MsTest.exe)
 
 - Use [Moq](https://github.com/Moq/moq4) to mock ErrorContext. The database will not be used for tests.
+
+- [DeepEqual](http://www.nuget.org/packages/DeepEqual/) Extensible deep comparison library for .Net used in unit testing.
 
 - [Glimpse](http://getglimpse.com/) to view SQL queries and many other things
   - run the app, navigate to /glimpse.axd and click "Turn Glimpse On".
@@ -122,18 +123,6 @@ PagingEntityFramework.Domain
 ├── ErrorResult.cs
 └── SearchCriteria.cs
 ```
-
-## Contoso University project
-
-These two projects seem to do the same thing (paging with EF6, MVC4/5 and navigation bar) but what if there are million lines in the database ?
-With Contoso and PagedList nugget package you retrieve all lines each time and display only a few lines per page. The application could be slow and maybe you can have a timeout. I think this is not the right way to do.
-
-This is why I prefered to make my own paging system with two SQL queries:
-
-- the first to retrieve only the wanted range of lines
-- the second to get the total number of lines in the table (used for paging)
-
-The original [Contoso University](http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application) project.
 
 ## Creator
 

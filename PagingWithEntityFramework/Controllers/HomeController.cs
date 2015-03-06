@@ -4,6 +4,7 @@ using PagingWithEntityFramework.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -45,6 +46,9 @@ namespace PagingWithEntityFramework.Controllers
         /// <returns></returns>
         public ActionResult Get(ErrorModel errorModel)
         {
+            if(errorModel == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             var searchCriteria = _errorService.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
             var model = CreateModel(errorModel, searchCriteria); 
 
@@ -60,6 +64,9 @@ namespace PagingWithEntityFramework.Controllers
         [HttpPost]
         public ActionResult Search(ErrorModel errorModel)
         {
+            if (errorModel == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             // always set the page to 1 to display the result
             errorModel.CurrentPage = 1;
 

@@ -7,48 +7,69 @@ using PagingWithEntityFramework.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DeepEqual.Syntax;
 
 namespace PagingWithEntityFramework.Tests
 {
     [TestClass]
     public class ErrorServiceTest : BaseTest
-    {
-        private int _page;
-        private int _pageIndex;
-        private int _linesPerPage;
-        private IEnumerable<Error> _errors;
-
+    {                
         [TestInitialize]
         public void Initialize()
         {
             // initialize common data
-            _page = 1;
-            _pageIndex = 0;
-            _linesPerPage = 30;
-            _errors = GetErrors();
+            currentPage = 1;
+            pageIndex = 0;
+            linesPerPage = 30;            
         }
 
         [TestMethod]
         public void RetrieveErrorsTestWithoutCriteria_Ok()
         {
-            // Arrange
-            var numberOfErrors = _errors.Count();
+            // Arrange            
+            var errorContextMock = CreateMockContext();
 
-            // Create a mock for ErrorContext
-            var errorContextMock = new Mock<ErrorContext>();
-            errorContextMock.Setup(c => c.FindTotalNumberOfErrors()).Returns(numberOfErrors);
-            errorContextMock.Setup(c => c.FindErrorsByPageIndex(_pageIndex, _linesPerPage)).Returns(_errors);
-            
             // Act
             var errorService = new ErrorService(errorContextMock.Object);
-            var errorResult = errorService.RetrieveErrors(_page, _linesPerPage, null);
+            var errorResult = errorService.RetrieveErrors(currentPage, linesPerPage);
+            
+            // expected result with errors sorted by id descending
+            var expectedErrorResult = new ErrorResult
+            {
+                Errors = errors.OrderByDescending(e => e.Id),
+                TotalLines = errors.Count()
+            };
 
             // Assert
-            Assert.AreEqual(numberOfErrors, errorResult.TotalLines);
-            Assert.AreEqual(numberOfErrors, errorResult.Errors.Count());
+            var result = expectedErrorResult.IsDeepEqual(errorResult);
+            Assert.IsTrue(result);
 
-            errorContextMock.Verify(c => c.FindTotalNumberOfErrors(), Times.Once());
-            errorContextMock.Verify(c => c.FindErrorsByPageIndex(_pageIndex, _linesPerPage), Times.Once());
+            errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
+        }
+
+        [TestMethod]
+        public void RetrieveErrorsTestWithoutCriteriaAndNegativePage_Ok()
+        {
+            // Arrange            
+            var page = -1;
+            var errorContextMock = CreateMockContext();
+
+            // Act
+            var errorService = new ErrorService(errorContextMock.Object);
+            var errorResult = errorService.RetrieveErrors(page, linesPerPage);
+
+            // expected result with errors sorted by id descending
+            var expectedErrorResult = new ErrorResult
+            {
+                Errors = errors.OrderByDescending(e => e.Id),
+                TotalLines = errors.Count()
+            };
+
+            // Assert
+            var result = expectedErrorResult.IsDeepEqual(errorResult);
+            Assert.IsTrue(result);
+
+            errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
         }
 
         [TestMethod]
@@ -60,23 +81,25 @@ namespace PagingWithEntityFramework.Tests
                 ServerName = "Server_1"
             };
 
-            var filteredErrors = _errors.Where(e => e.ServerName.Contains(searchCriteria.ServerName)).ToList();
+            var filteredErrors = errors.Where(e => e.ServerName.Contains(searchCriteria.ServerName)).OrderByDescending(e => e.Id);
 
-            // Create a mock for ErrorContext
-            var errorContextMock = new Mock<ErrorContext>();
-            errorContextMock.Setup(c => c.FindTotalNumberOfErrorsWithCriteria(searchCriteria)).Returns(filteredErrors.Count());
-            errorContextMock.Setup(c => c.FindErrorsByPageIndexAndCriteria(_pageIndex, _linesPerPage, searchCriteria)).Returns(filteredErrors);
+            var expectedErrorResult = new ErrorResult
+            {
+                Errors = filteredErrors,
+                TotalLines = filteredErrors.Count()
+            };
+            
+            var errorContextMock = CreateMockContext();
 
             // Act
             var errorService = new ErrorService(errorContextMock.Object);
-            var errorResult = errorService.RetrieveErrors(_page, _linesPerPage, searchCriteria);
+            var errorResult = errorService.RetrieveErrors(currentPage, linesPerPage, searchCriteria);
 
             // Assert
-            Assert.AreEqual(filteredErrors.Count(), errorResult.TotalLines);
-            Assert.AreEqual(filteredErrors.Count(), errorResult.Errors.Count());
+            var result = expectedErrorResult.IsDeepEqual(errorResult);
+            Assert.IsTrue(result);
 
-            errorContextMock.Verify(c => c.FindTotalNumberOfErrorsWithCriteria(searchCriteria), Times.Once());
-            errorContextMock.Verify(c => c.FindErrorsByPageIndexAndCriteria(_pageIndex, _linesPerPage, searchCriteria), Times.Once());
+            errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
         }
     }
 }
