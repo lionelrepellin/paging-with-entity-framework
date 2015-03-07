@@ -15,7 +15,7 @@ namespace Paging.Tests
         [TestMethod]
         public void AllButtonsAreDisplayed_Test()
         {
-            var currentPage = 5;
+            var currentPage = 7;
             var navbar = new NavBar(currentPage, 20, "Controller/Action");
             var buttons = navbar.GetAllButtons(true, true);
 
@@ -39,6 +39,10 @@ namespace Paging.Tests
 
             var selectedPage = buttons.OfType<Page>().Where(btn => btn.IsSelected).Single();
             Assert.AreEqual(currentPage, selectedPage.PageNumber);
+
+            var html = navbar.DrawButton();
+            Assert.IsTrue(html.StartsWith("<nav><ul class='pagination'>"));
+            Assert.IsTrue(html.EndsWith("</ul></nav>"));
         }
 
 
@@ -99,6 +103,7 @@ namespace Paging.Tests
             var buttons = navbar.GetAllButtons(true, true);
 
             Assert.IsTrue(buttons.Count() == 0);
+            Assert.IsTrue(string.IsNullOrEmpty(navbar.DrawButton()));
         }
 
 

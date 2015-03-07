@@ -91,7 +91,8 @@ PagingEntityFramework
 ├── Controllers
 │   └── HomeController.cs
 ├── Helpers
-│   └── CustomHelpers.cs
+│   ├── CustomHelpers.cs
+│   └── PagingHelpers.cs
 ├── Model
 │   └── ErrorModel.cs
 └── Views

@@ -1,5 +1,6 @@
 ﻿using PagingWithEntityFramework.Business;
 using PagingWithEntityFramework.Domain;
+using PagingWithEntityFramework.Helpers;
 using PagingWithEntityFramework.Models;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace PagingWithEntityFramework.Controllers
             if(errorModel == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var searchCriteria = _errorService.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
+            var searchCriteria = PagingHelpers.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
             var model = CreateModel(errorModel, searchCriteria); 
 
             return View("Index", model);
@@ -70,7 +71,7 @@ namespace PagingWithEntityFramework.Controllers
             // always set the page to 1 to display the result
             errorModel.CurrentPage = 1;
 
-            var searchCriteria = _errorService.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
+            var searchCriteria = PagingHelpers.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
             var model = CreateModel(errorModel, searchCriteria);
 
             return View("Index", model);

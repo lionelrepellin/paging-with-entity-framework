@@ -167,6 +167,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CustomHelpers.cs" />
+    <Compile Include="Helpers\PagingHelpers.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
