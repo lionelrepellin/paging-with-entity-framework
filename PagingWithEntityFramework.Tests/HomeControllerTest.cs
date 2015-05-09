@@ -1,17 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using PagingWithEntityFramework.Business;
 using PagingWithEntityFramework.Controllers;
-using PagingWithEntityFramework.DAL;
 using PagingWithEntityFramework.Domain;
-using PagingWithEntityFramework.Domain.Entities;
 using PagingWithEntityFramework.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace PagingWithEntityFramework.Tests
 {
@@ -22,16 +15,16 @@ namespace PagingWithEntityFramework.Tests
         public void Initialize()
         {
             // initialize common data
-            pageIndex = 0;
-            currentPage = 1;
-            linesPerPage = 20;
+            PageIndex = 0;
+            CurrentPage = 1;
+            LinesPerPage = 20;
         }
 
         [TestMethod]
         public void CreateModelTestWithoutCriteria_Ok()
         {
             // Arrange
-            var numberOfErrors = errors.Count();
+            var numberOfErrors = Errors.Count();
             var errorContextMock = CreateMockContext();
 
             // instantiate ErrorService with mock
@@ -39,12 +32,12 @@ namespace PagingWithEntityFramework.Tests
 
             // Act
             var controller = new HomeController(errorService);
-            var errorModel = controller.CreateModel(new Models.ErrorModel { CurrentPage = currentPage }, null);
+            var errorModel = controller.CreateModel(new ErrorModel { CurrentPage = CurrentPage }, null);
 
             // Assert
-            Assert.AreEqual(currentPage, errorModel.CurrentPage);
+            Assert.AreEqual(CurrentPage, errorModel.CurrentPage);
             Assert.AreEqual(numberOfErrors, errorModel.Errors.Count());
-            Assert.AreEqual(linesPerPage, errorModel.LinesPerPage);
+            Assert.AreEqual(LinesPerPage, errorModel.LinesPerPage);
             Assert.AreEqual(numberOfErrors, errorModel.TotalLines);
 
             errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
@@ -59,7 +52,7 @@ namespace PagingWithEntityFramework.Tests
                 Severity = "Warning"
             };
 
-            var filteredErrors = errors.Where(e => e.ErrorLevel.Contains(searchCriteria.Severity)).ToList();
+            var filteredErrors = Errors.Where(e => e.ErrorLevel.Contains(searchCriteria.Severity)).ToList();
             var numberOfErrors = filteredErrors.Count;
 
             // Create a mock for ErrorContext
@@ -71,7 +64,7 @@ namespace PagingWithEntityFramework.Tests
             var homeController = new HomeController(errorService);
             var errorModel = new ErrorModel
             {
-                CurrentPage = currentPage,
+                CurrentPage = CurrentPage,
                 ErrorLevel = "Warning"
             };
 
@@ -79,9 +72,9 @@ namespace PagingWithEntityFramework.Tests
             var model = homeController.CreateModel(errorModel, searchCriteria);
 
             // Assert
-            Assert.AreEqual(currentPage, errorModel.CurrentPage);
+            Assert.AreEqual(CurrentPage, errorModel.CurrentPage);
             Assert.AreEqual(numberOfErrors, errorModel.Errors.Count());
-            Assert.AreEqual(linesPerPage, errorModel.LinesPerPage);
+            Assert.AreEqual(LinesPerPage, errorModel.LinesPerPage);
             Assert.AreEqual(numberOfErrors, errorModel.TotalLines);
 
             errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());            

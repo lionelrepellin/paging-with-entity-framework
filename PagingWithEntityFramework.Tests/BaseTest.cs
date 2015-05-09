@@ -1,21 +1,19 @@
-﻿using Moq;
-using PagingWithEntityFramework.DAL;
-using PagingWithEntityFramework.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Moq;
+using PagingWithEntityFramework.DAL;
+using PagingWithEntityFramework.Domain.Entities;
 
 namespace PagingWithEntityFramework.Tests
 {
     public abstract class BaseTest
     {
-        protected int pageIndex;
-        protected int currentPage;
-        protected int linesPerPage;
+        protected int PageIndex;
+        protected int CurrentPage;
+        protected int LinesPerPage;
 
-        protected IEnumerable<Error> errors = new List<Error>
+        protected readonly IEnumerable<Error> Errors = new List<Error>
             {
                 new Error { Id = 1, CurrentDate = DateTime.Now.AddMinutes(1), ServerName = "Server_1", ErrorLevel = "Warning", Stacktrace = "" },
                 new Error { Id = 2, CurrentDate = DateTime.Now.AddMinutes(2), ServerName = "Server_1", ErrorLevel = "Error", Stacktrace = "" },
@@ -36,7 +34,7 @@ namespace PagingWithEntityFramework.Tests
         protected Mock<ErrorContext> CreateMockContext()
         {
             var errorContextMock = new Mock<ErrorContext>();
-            var queryableErrors = errors.Select(e => e).AsQueryable<Error>();
+            var queryableErrors = Errors.Select(e => e).AsQueryable<Error>();
             errorContextMock.Setup(c => c.FindAllErrors()).Returns(queryableErrors);
             return errorContextMock;
         }

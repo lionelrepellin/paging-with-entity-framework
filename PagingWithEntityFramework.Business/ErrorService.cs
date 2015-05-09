@@ -1,17 +1,13 @@
-﻿using PagingWithEntityFramework.DAL;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PagingWithEntityFramework.DAL;
 using PagingWithEntityFramework.Domain;
-
 
 namespace PagingWithEntityFramework.Business
 {
     public class ErrorService
     {
-        private ErrorContext _errorContext;
+        private readonly ErrorContext _errorContext;
 
         /// <summary>
         /// Constructor

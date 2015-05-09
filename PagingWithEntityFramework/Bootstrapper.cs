@@ -1,8 +1,8 @@
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
-using Unity.Mvc4;
-using PagingWithEntityFramework.DAL;
 using PagingWithEntityFramework.Business;
+using PagingWithEntityFramework.DAL;
+using Unity.Mvc4;
 
 namespace PagingWithEntityFramework
 {
@@ -30,7 +30,7 @@ namespace PagingWithEntityFramework
             return container;
         }
 
-        public static void RegisterTypes(IUnityContainer container)
+        private static void RegisterTypes(IUnityContainer container)
         {            
             // business layer
             container.RegisterType<ErrorService>();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace PagingWithEntityFramework.Domain
+﻿namespace PagingWithEntityFramework.Domain
 {
     public class SearchCriteria
     {

@@ -1,13 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using DeepEqual.Syntax;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using PagingWithEntityFramework.Business;
-using PagingWithEntityFramework.DAL;
 using PagingWithEntityFramework.Domain;
-using PagingWithEntityFramework.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DeepEqual.Syntax;
 
 namespace PagingWithEntityFramework.Tests
 {
@@ -18,9 +14,9 @@ namespace PagingWithEntityFramework.Tests
         public void Initialize()
         {
             // initialize common data
-            currentPage = 1;
-            pageIndex = 0;
-            linesPerPage = 30;            
+            CurrentPage = 1;
+            PageIndex = 0;
+            LinesPerPage = 30;            
         }
 
         [TestMethod]
@@ -31,13 +27,13 @@ namespace PagingWithEntityFramework.Tests
 
             // Act
             var errorService = new ErrorService(errorContextMock.Object);
-            var errorResult = errorService.RetrieveErrors(currentPage, linesPerPage);
+            var errorResult = errorService.RetrieveErrors(CurrentPage, LinesPerPage);
             
             // expected result with errors sorted by id descending
             var expectedErrorResult = new ErrorResult
             {
-                Errors = errors.OrderByDescending(e => e.Id),
-                TotalLines = errors.Count()
+                Errors = Errors.OrderByDescending(e => e.Id),
+                TotalLines = Errors.Count()
             };
 
             // Assert
@@ -51,18 +47,18 @@ namespace PagingWithEntityFramework.Tests
         public void RetrieveErrorsTestWithoutCriteriaAndNegativePage_Ok()
         {
             // Arrange            
-            var page = -1;
+            const int page = -1;
             var errorContextMock = CreateMockContext();
 
             // Act
             var errorService = new ErrorService(errorContextMock.Object);
-            var errorResult = errorService.RetrieveErrors(page, linesPerPage);
+            var errorResult = errorService.RetrieveErrors(page, LinesPerPage);
 
             // expected result with errors sorted by id descending
             var expectedErrorResult = new ErrorResult
             {
-                Errors = errors.OrderByDescending(e => e.Id),
-                TotalLines = errors.Count()
+                Errors = Errors.OrderByDescending(e => e.Id),
+                TotalLines = Errors.Count()
             };
 
             // Assert
@@ -81,7 +77,7 @@ namespace PagingWithEntityFramework.Tests
                 ServerName = "Server_1"
             };
 
-            var filteredErrors = errors.Where(e => e.ServerName.Contains(searchCriteria.ServerName)).OrderByDescending(e => e.Id);
+            var filteredErrors = Errors.Where(e => e.ServerName.Contains(searchCriteria.ServerName)).OrderByDescending(e => e.Id);
 
             var expectedErrorResult = new ErrorResult
             {
@@ -93,7 +89,7 @@ namespace PagingWithEntityFramework.Tests
 
             // Act
             var errorService = new ErrorService(errorContextMock.Object);
-            var errorResult = errorService.RetrieveErrors(currentPage, linesPerPage, searchCriteria);
+            var errorResult = errorService.RetrieveErrors(CurrentPage, LinesPerPage, searchCriteria);
 
             // Assert
             var result = expectedErrorResult.IsDeepEqual(errorResult);

@@ -1,20 +1,17 @@
-﻿using PagingWithEntityFramework.Business;
+﻿using System;
+using System.Net;
+using System.Web.Mvc;
+using PagingWithEntityFramework.Business;
 using PagingWithEntityFramework.Domain;
 using PagingWithEntityFramework.Helpers;
 using PagingWithEntityFramework.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
 
 namespace PagingWithEntityFramework.Controllers
 {
     public class HomeController : Controller
     {
         private const int LINES_PER_PAGE = 20;
-        private ErrorService _errorService;
+        private readonly ErrorService _errorService;
 
         /// <summary>
         /// Constructor

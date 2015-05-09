@@ -1,8 +1,6 @@
-﻿using Paging.Buttons;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using Paging.Buttons;
 
 namespace Paging
 {
@@ -53,10 +51,7 @@ namespace Paging
             string navigation = string.Empty;
             var buttons = GetAllButtons(_showFirstLastButtons, _showPreviousNextButtons);
 
-            foreach (var button in buttons)
-            {
-                navigation = string.Concat(navigation, button.Draw());
-            }
+            navigation = buttons.Aggregate(navigation, (current, button) => string.Concat(current, button.Draw()));
 
             // no html generation
             if (string.IsNullOrEmpty(navigation))
@@ -113,7 +108,7 @@ namespace Paging
         private List<Button> GetPagesButton()
         {
             // the main logic is here
-            int pageDisplayed = 0;
+            var pageDisplayed = 0;
             List<Button> pageButton = null;
 
             // case 1 : the first pages
@@ -139,7 +134,7 @@ namespace Paging
 
         private List<Button> CreatePageButtons(int startPage, int currentPage, int totalPages, ref int pageDisplayed, string actionUrl, string additionalParameters)
         {
-            List<Button> pageButtons = new List<Button>();
+            var pageButtons = new List<Button>();
 
             for (var page = startPage; page <= totalPages; page++)
             {

@@ -1,12 +1,8 @@
 ﻿using PagingWithEntityFramework.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace PagingWithEntityFramework.Helpers
 {
-    public class PagingHelpers
+    public static class PagingHelpers
     {
         /// <summary>
         /// Return a SearchCriteria object if search criteria have been defined
