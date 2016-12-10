@@ -1,16 +1,16 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Paging.Buttons;
 
 namespace Paging.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class NavBarTests
     {
         /// <summary>
         /// For 20 pages all buttons (first/last and previous/next) are displayed
         /// </summary>
-        [TestMethod]
+        [Test]
         public void AllButtonsAreDisplayed_Test()
         {
             const int currentPage = 7;
@@ -21,16 +21,16 @@ namespace Paging.Tests
             Assert.IsTrue(buttons.Count() == 15);
 
             var firstButton = buttons.First();
-            Assert.IsInstanceOfType(firstButton, typeof(First));
+            Assert.IsInstanceOf<First>(firstButton);
 
             var lastButton = buttons.Last();
-            Assert.IsInstanceOfType(lastButton, typeof(Last));
+            Assert.IsInstanceOf<Last>(lastButton);
 
             var previousButton = buttons.ElementAt(1);
-            Assert.IsInstanceOfType(previousButton, typeof(Previous));
+            Assert.IsInstanceOf<Previous>(previousButton);
 
             var nextButton = buttons.ElementAt(13);
-            Assert.IsInstanceOfType(nextButton, typeof(Next));
+            Assert.IsInstanceOf<Next>(nextButton);
 
             var pageButton = buttons.OfType<Page>().Count();
             Assert.AreEqual(11, pageButton);
@@ -47,7 +47,7 @@ namespace Paging.Tests
         /// <summary>
         /// For 10 pages only previous and next button are displayed
         /// </summary>
-        [TestMethod]
+        [Test]
         public void OnlyPreviousAndNextButtons_Test()
         {
             const int currentPage = 3;
@@ -57,10 +57,10 @@ namespace Paging.Tests
             Assert.IsTrue(buttons.Count() == 12);
 
             var previousButton = buttons.First();
-            Assert.IsInstanceOfType(previousButton, typeof(Previous));
+            Assert.IsInstanceOf<Previous>(previousButton);
 
             var nextButton = buttons.Last();
-            Assert.IsInstanceOfType(nextButton, typeof(Next));
+            Assert.IsInstanceOf<Next>(nextButton);
 
             var pageButton = buttons.OfType<Page>().Count();
             Assert.AreEqual(10, pageButton);
@@ -73,7 +73,7 @@ namespace Paging.Tests
         /// <summary>
         /// For 5 pages of less no additional button are displayed
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NoAdditionalButton_Test()
         {
             const int currentPage = 2;
@@ -93,7 +93,7 @@ namespace Paging.Tests
         /// <summary>
         /// For 1 page or less no button is displayed
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NoButtonToDisplay_Test()
         {
             const int currentPage = 1;
@@ -108,7 +108,7 @@ namespace Paging.Tests
         /// <summary>
         /// Ensure first and previous buttons are disabled when the first page is selected (current page)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void FirstAndPreviousButtonsAreDisabled_Test()
         {
             const int currentPage = 1;
@@ -118,19 +118,19 @@ namespace Paging.Tests
             Assert.IsTrue(buttons.Count() == 15);
 
             var firstButton = buttons.First();
-            Assert.IsInstanceOfType(firstButton, typeof(First));
+            Assert.IsInstanceOf<First>(firstButton);
             Assert.IsTrue(firstButton.IsSelected);
 
             var lastButton = buttons.Last();
-            Assert.IsInstanceOfType(lastButton, typeof(Last));
+            Assert.IsInstanceOf<Last>(lastButton);
             Assert.IsFalse(lastButton.IsSelected);
 
             var previousButton = buttons.ElementAt(1);
-            Assert.IsInstanceOfType(previousButton, typeof(Previous));
+            Assert.IsInstanceOf<Previous>(previousButton);
             Assert.IsTrue(previousButton.IsSelected);
 
             var nextButton = buttons.ElementAt(13);
-            Assert.IsInstanceOfType(nextButton, typeof(Next));
+            Assert.IsInstanceOf<Next>(nextButton);
             Assert.IsFalse(nextButton.IsSelected);
 
             var pageButton = buttons.OfType<Page>().Count();
@@ -144,7 +144,7 @@ namespace Paging.Tests
         /// <summary>
         /// Ensure last and next buttons are disabled when the last page is selected (current page)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void LastAndNextButtonsAreDisabled_Test()
         {
             const int currentPage = 20;
@@ -154,19 +154,19 @@ namespace Paging.Tests
             Assert.IsTrue(buttons.Count() == 15);
 
             var firstButton = buttons.First();
-            Assert.IsInstanceOfType(firstButton, typeof(First));
+            Assert.IsInstanceOf<First>(firstButton);
             Assert.IsFalse(firstButton.IsSelected);
 
             var lastButton = buttons.Last();
-            Assert.IsInstanceOfType(lastButton, typeof(Last));
+            Assert.IsInstanceOf<Last>(lastButton);
             Assert.IsTrue(lastButton.IsSelected);
 
             var previousButton = buttons.ElementAt(1);
-            Assert.IsInstanceOfType(previousButton, typeof(Previous));
+            Assert.IsInstanceOf<Previous>(previousButton);
             Assert.IsFalse(previousButton.IsSelected);
 
             var nextButton = buttons.ElementAt(13);
-            Assert.IsInstanceOfType(nextButton, typeof(Next));
+            Assert.IsInstanceOf<Next>(nextButton);
             Assert.IsTrue(nextButton.IsSelected);
 
             var pageButton = buttons.OfType<Page>().Count();

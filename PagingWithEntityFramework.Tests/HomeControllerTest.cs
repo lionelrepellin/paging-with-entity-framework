@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using PagingWithEntityFramework.Business;
 using PagingWithEntityFramework.Controllers;
@@ -8,10 +8,10 @@ using PagingWithEntityFramework.Models;
 
 namespace PagingWithEntityFramework.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class HomeControllerTest : BaseTest
     {
-        [TestInitialize]
+        [TestFixtureSetUp]
         public void Initialize()
         {
             // initialize common data
@@ -20,7 +20,7 @@ namespace PagingWithEntityFramework.Tests
             LinesPerPage = 20;
         }
 
-        [TestMethod]
+        [Test]
         public void CreateModelTestWithoutCriteria_Ok()
         {
             // Arrange
@@ -43,7 +43,7 @@ namespace PagingWithEntityFramework.Tests
             errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
         }
 
-        [TestMethod]
+        [Test]
         public void CreateModelTestWithCriteria_Ok()
         {
             // Arrange

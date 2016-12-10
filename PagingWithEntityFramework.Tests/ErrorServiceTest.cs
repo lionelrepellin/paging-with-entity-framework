@@ -1,16 +1,16 @@
 ﻿using System.Linq;
 using DeepEqual.Syntax;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 using PagingWithEntityFramework.Business;
 using PagingWithEntityFramework.Domain;
 
 namespace PagingWithEntityFramework.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ErrorServiceTest : BaseTest
     {                
-        [TestInitialize]
+        [TestFixtureSetUp]
         public void Initialize()
         {
             // initialize common data
@@ -19,7 +19,7 @@ namespace PagingWithEntityFramework.Tests
             LinesPerPage = 30;            
         }
 
-        [TestMethod]
+        [Test]
         public void RetrieveErrorsTestWithoutCriteria_Ok()
         {
             // Arrange            
@@ -43,7 +43,7 @@ namespace PagingWithEntityFramework.Tests
             errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
         }
 
-        [TestMethod]
+        [Test]
         public void RetrieveErrorsTestWithoutCriteriaAndNegativePage_Ok()
         {
             // Arrange            
@@ -68,7 +68,7 @@ namespace PagingWithEntityFramework.Tests
             errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
         }
 
-        [TestMethod]
+        [Test]
         public void RetrieveErrorsTestWithCriteria_Ok()
         {
             // Arrange
