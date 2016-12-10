@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagingWithEntityFramework", "PagingWithEntityFramework\PagingWithEntityFramework.csproj", "{F9960D0B-0E46-49B8-901D-0B5A339FCE62}"
 EndProject
@@ -22,13 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paging.Tests", "Paging.Tests\Paging.Tests.csproj", "{59F79E49-37F7-44DD-95F4-60D84CD78F8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagingWithEntityFramework.Tests", "PagingWithEntityFramework.Tests\PagingWithEntityFramework.Tests.csproj", "{E777940D-70B4-4A88-8130-4395EB3DA535}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DE698DF2-65F5-4E79-B4BD-D2AF0B655D38}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
