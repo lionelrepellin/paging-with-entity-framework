@@ -32,7 +32,7 @@ This is a simple navigation bar (with Bootstrap theme). You can define the minim
 
 - Use [Unity](http://www.asp.net/mvc/overview/older-versions/hands-on-labs/aspnet-mvc-4-dependency-injection) to register ErrorContext and ErrorService for dependency injection
 
-- Unit testing with [Visual Studio Unit Testing Framework](http://en.wikipedia.org/wiki/Visual_Studio_Unit_Testing_Framework) (MsTest.exe)
+- Unit testing with [NUnit](https://www.nunit.org/)
 
 - Use [Moq](https://github.com/Moq/moq4) to mock ErrorContext. The database will not be used for tests.
 
