@@ -6,6 +6,8 @@ namespace PagingWithEntityFramework.DAL
 {
     public class ErrorContext : DbContext
     {
+        public DbSet<Error> Errors { get; set; }
+
         static ErrorContext()
         {
             Database.SetInitializer<ErrorContext>(null);
@@ -17,8 +19,10 @@ namespace PagingWithEntityFramework.DAL
             this.Configuration.LazyLoadingEnabled = false;
         }
 
-        public DbSet<Error> Errors { get; set; }
-
+        /// <summary>
+        /// Don't forget to call .ToList()
+        /// </summary>
+        /// <returns></returns>
         public virtual IQueryable<Error> FindAllErrors()
         {
             return Errors.Select(e => e);
