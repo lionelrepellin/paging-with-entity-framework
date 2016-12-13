@@ -47,7 +47,7 @@ namespace PagingWithEntityFramework.Controllers
             if(errorModel == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var searchCriteria = PagingHelpers.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
+            var searchCriteria = PagingHelpers.CreateSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
             var model = CreateModel(errorModel, searchCriteria); 
 
             return View("Index", model);
@@ -68,7 +68,7 @@ namespace PagingWithEntityFramework.Controllers
             // always set the page to 1 to display the result
             errorModel.CurrentPage = 1;
 
-            var searchCriteria = PagingHelpers.GetDefinedSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
+            var searchCriteria = PagingHelpers.CreateSearchCriteria(errorModel.Name, errorModel.ErrorLevel, errorModel.ErrorMessage);
             var model = CreateModel(errorModel, searchCriteria);
 
             return View("Index", model);
@@ -76,6 +76,7 @@ namespace PagingWithEntityFramework.Controllers
 
 
         // the 'virtual' keyword is used to mock the method
+        // TODO move it into a dedicated service to test it
         public virtual ErrorModel CreateModel(ErrorModel errorModel, SearchCriteria searchCriteria)
         {
             // retrieve errors from database
