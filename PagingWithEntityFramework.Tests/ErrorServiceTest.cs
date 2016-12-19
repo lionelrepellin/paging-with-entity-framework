@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DeepEqual.Syntax;
 using Moq;
 using NUnit.Framework;
@@ -96,6 +97,12 @@ namespace PagingWithEntityFramework.Tests
             Assert.IsTrue(result);
 
             errorContextMock.Verify(c => c.FindAllErrors(), Times.Once());
+        }
+
+        [Test, ExpectedException(typeof(ArgumentNullException))]
+        public void ThrowArgumentNullExceptionIfNoContext()
+        {
+            var errorService = new ErrorService(null);
         }
     }
 }
