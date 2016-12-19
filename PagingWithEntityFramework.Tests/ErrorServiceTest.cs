@@ -75,7 +75,8 @@ namespace PagingWithEntityFramework.Tests
             // Arrange
             var searchCriteria = new SearchCriteria
             {
-                ServerName = "Server_1"
+                ServerName = "Server_1",
+                StackTrace = ""
             };
 
             var filteredErrors = Errors.Where(e => e.ServerName.Contains(searchCriteria.ServerName)).OrderByDescending(e => e.Id);
